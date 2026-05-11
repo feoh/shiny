@@ -60,6 +60,6 @@ if sound_obj not in text:
         f"$(TARGET) : $(OF_CORE_OBJ_FILES) {extra_objs} $(OF_CORE_OBJ_OUTPUT_PATH).compiler_flags\n"
     )
     text = text.replace(marker, replacement)
-text = text.replace("$(CC) $(OF_CORE_OBJ_FILES) -o $@", f"$(CC) $(OF_CORE_OBJ_FILES) {extra_objs} {tess} -o $@")
+text = text.replace("$(CC) $(OF_CORE_OBJ_FILES) -o $@", f"$(CC) -r $(OF_CORE_OBJ_FILES) {extra_objs} {tess} -o $@")
 compile_core_mk.write_text(text)
 PY
