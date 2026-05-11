@@ -13,6 +13,7 @@ export EM_CACHE ?= $(CURDIR)/.emscripten-cache
 
 web:
 	mkdir -p bin/data
+	touch bin/data/.keep
 	$(EMMAKE) $(MAKE) Release OF_ROOT=$(OF_ROOT) CC=$(EMCC) CXX=$(EMCXX) PROJECT_EMSCRIPTEN_TEMPLATE=$(WEB_SHELL)
 
 web-run: web
