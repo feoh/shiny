@@ -37,6 +37,9 @@ jobs:
           mkdir -p /tmp/of
           tar -xzf /tmp/of.tar.gz -C /tmp/of --strip-components=1
 
+      - name: Install openFrameworks Linux dependencies
+        run: sudo /tmp/of/scripts/linux/ubuntu/install_dependencies.sh -y
+
       - name: Patch openFrameworks Emscripten build for GitHub Pages
         run: scripts/patch-openframeworks-emscripten.sh /tmp/of
 
