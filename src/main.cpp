@@ -33,7 +33,9 @@ int main() {
     // leave it resizable so the FBO and wave math can adapt to any monitor size.
     settings.setSize(1280, 720);
     settings.windowMode = OF_WINDOW;
+#if !defined(TARGET_EMSCRIPTEN)
     settings.resizable = true;
+#endif
     settings.title = "Sinuous Waves";
 
 #if !defined(TARGET_EMSCRIPTEN)
