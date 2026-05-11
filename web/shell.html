@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Sinuous Waves</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #03050a;
+        color: #f4f7ff;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+
+      #header {
+        align-items: center;
+        background: rgba(3, 5, 10, 0.92);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        gap: 16px;
+        min-height: 56px;
+        padding: 0 16px;
+      }
+
+      #title {
+        font-size: 15px;
+        font-weight: 650;
+        white-space: nowrap;
+      }
+
+      #status {
+        color: #aeb8d7;
+        font-size: 13px;
+        margin: 0;
+      }
+
+      #controls {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        margin-left: auto;
+        white-space: nowrap;
+      }
+
+      #controls label {
+        color: #cbd3ea;
+        font-size: 13px;
+      }
+
+      #fullscreenButton {
+        background: #e9f1ff;
+        border: 0;
+        border-radius: 6px;
+        color: #111827;
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+        padding: 7px 10px;
+      }
+
+      #progress {
+        height: 4px;
+        width: 120px;
+      }
+
+      #stage {
+        min-height: 0;
+        position: relative;
+      }
+
+      .emscripten_border {
+        border: 0;
+        height: 100%;
+      }
+
+      canvas.emscripten {
+        background: #000;
+        display: block;
+        height: 100vh;
+        outline: none;
+        width: 100vw;
+      }
+
+      #output {
+        display: none;
+      }
+
+      .spinner {
+        animation: rotation 0.8s linear infinite;
+        border-bottom: 3px solid #72e7ff;
+        border-left: 3px solid #72e7ff;
+        border-radius: 100%;
+        border-right: 3px solid #72e7ff;
+        border-top: 3px solid rgba(255, 255, 255, 0.2);
+        height: 16px;
+        width: 16px;
+      }
+
+      @keyframes rotation {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 720px) {
+        #header {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 8px;
+          padding: 10px 12px;
+        }
+
+        #controls {
+          margin-left: 0;
+        }
+
+        canvas.emscripten {
+          height: calc(100vh - 106px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <div id="title">Sinuous Waves</div>
+      <div class="spinner" id="spinner"></div>
+      <div class="emscripten" id="status">Downloading...</div>
+      <progress value="0" max="100" id="progress" hidden="hidden"></progress>
+      <span id="controls">
+        <label><input type="checkbox" id="resize" checked> Resize</label>
+        <label><input type="checkbox" id="pointerLock"> Pointer lock</label>
+        <input type="button" id="fullscreenButton" value="Fullscreen">
+      </span>
+    </div>
+
+    <main id="stage">
+      <div class="emscripten_border">
+        <canvas class="emscripten" id="canvas" tabindex="-1"></canvas>
+      </div>
+      <textarea id="output" rows="8"></textarea>
+    </main>
+
+    <script async type="text/javascript" src="app.js"></script>
+    {{{ SCRIPT }}}
+  </body>
+</html>

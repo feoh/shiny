@@ -1,0 +1,15 @@
+.emscripten-cache/
+bin/
+obj/
+
+*.o
+*.d
+*.so
+*.wasm
+*.wasm.map
+*.data
+*.js
+*.html.mem
+
+.DS_Store
+.codex

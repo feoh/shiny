@@ -1,0 +1,66 @@
+name: Build and publish web sketch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out sketch
+        uses: actions/checkout@v4
+
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends curl ca-certificates make python3
+
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: "latest"
+
+      - name: Download openFrameworks
+        run: |
+          curl -L -o /tmp/of.tar.gz https://sourceforge.net/projects/openframeworks.mirror/files/0.12.1/of_v0.12.1_linux64_gcc6_release.tar.gz/download
+          mkdir -p /tmp/of
+          tar -xzf /tmp/of.tar.gz -C /tmp/of --strip-components=1
+
+      - name: Patch openFrameworks Emscripten build for GitHub Pages
+        run: scripts/patch-openframeworks-emscripten.sh /tmp/of
+
+      - name: Build web target
+        run: make web OF_ROOT=/tmp/of
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p public
+          cp -R bin/em/shiny/. public/
+          touch public/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
