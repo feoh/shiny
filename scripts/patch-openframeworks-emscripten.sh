@@ -33,6 +33,7 @@ tess_lib = Path(sys.argv[5])
 text = platform_mk.read_text()
 text = text.replace("PLATFORM_PTHREAD = -pthread -matomics -mbulk-memory", "PLATFORM_PTHREAD =")
 text = text.replace("CFLAG_PLATFORM_PTHREAD = -pthread -matomics -mbulk-memory", "CFLAG_PLATFORM_PTHREAD =")
+text = text.replace("PLATFORM_LDFLAGS += -s USE_WEBGPU=1", "# Removed for current Emscripten; this sketch targets WebGL, not WebGPU.")
 comment = "# GitHub Pages cannot set cross-origin isolation headers, so keep the web build single-threaded."
 if comment not in text:
     text = text.replace("PLATFORM_LDFLAGS +=  $(PLATFORM_PTHREAD)", f"{comment}\nPLATFORM_LDFLAGS +=  $(PLATFORM_PTHREAD)")
