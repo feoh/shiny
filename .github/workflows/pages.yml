@@ -24,7 +24,23 @@ jobs:
       - name: Install system packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends curl ca-certificates make python3
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            ca-certificates \
+            curl \
+            libcairo2-dev \
+            libgl1-mesa-dev \
+            libglfw3-dev \
+            libglu1-mesa-dev \
+            libgstreamer-plugins-base1.0-dev \
+            libgstreamer1.0-dev \
+            libgtk-3-dev \
+            libmpg123-dev \
+            libopenal-dev \
+            librtaudio-dev \
+            liburiparser-dev \
+            make \
+            pkg-config \
+            python3
 
       - name: Set up Emscripten
         uses: mymindstorm/setup-emsdk@v14
@@ -36,9 +52,6 @@ jobs:
           curl -L -o /tmp/of.tar.gz https://sourceforge.net/projects/openframeworks.mirror/files/0.12.1/of_v0.12.1_linux64_gcc6_release.tar.gz/download
           mkdir -p /tmp/of
           tar -xzf /tmp/of.tar.gz -C /tmp/of --strip-components=1
-
-      - name: Install openFrameworks Linux dependencies
-        run: sudo /tmp/of/scripts/linux/ubuntu/install_dependencies.sh -y
 
       - name: Patch openFrameworks Emscripten build for GitHub Pages
         run: scripts/patch-openframeworks-emscripten.sh /tmp/of
