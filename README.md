@@ -4,6 +4,25 @@ An openFrameworks C++ sketch that fills the window with bright, layered sine-wav
 
 Live web version: https://feoh.github.io/shiny/
 
+## Embedding
+
+GitHub repository READMEs cannot directly embed the running sketch because
+GitHub sanitizes active HTML such as `iframe` and `script` tags. Use the live
+link above from the README.
+
+On a site that allows iframes, such as a Hugo page or another static HTML page,
+embed the deployed Emscripten build with:
+
+```html
+<iframe
+  src="https://feoh.github.io/shiny/"
+  title="Sinuous Waves"
+  loading="lazy"
+  style="width: 100%; height: 720px; border: 0;"
+  allowfullscreen>
+</iframe>
+```
+
 ## Build
 
 Install openFrameworks, then either place this project in `openFrameworks/apps/myApps/sinuous_waves` and run:
