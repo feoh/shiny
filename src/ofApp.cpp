@@ -129,7 +129,16 @@ void ofApp::update() {
 
     // A mostly transparent black rectangle slowly darkens previous pixels.  With
     // trails disabled, the rectangle is fully opaque and each frame starts clean.
-    ofSetColor(0, 0, 0, drawTrails ? 18 : 255);
+    //
+    // The web build tends to preserve translucent FBO contents more visibly than
+    // the native desktop renderer.  A slightly stronger fade keeps accumulated
+    // trails from turning into a broad gray veil in browsers.
+#if defined(TARGET_EMSCRIPTEN)
+    constexpr int trailFadeAlpha = 34;
+#else
+    constexpr int trailFadeAlpha = 18;
+#endif
+    ofSetColor(0, 0, 0, drawTrails ? trailFadeAlpha : 255);
     ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 
     // All procedural motion is driven by elapsed time.  Scaling it here makes
@@ -308,10 +317,11 @@ void ofApp::drawWave(const Wave& wave, float time, float passOffset, float alpha
 
     ribbon.draw();
 
-    // Draw a faint white center spine over the colored ribbon.  It sharpens the
-    // motion path and creates bright highlights where many translucent strands
-    // overlap.
-    ofSetColor(255, static_cast<int>(95 * alphaScale));
+    // Draw a faint colored center spine over the ribbon.  This sharpens the
+    // motion path, but it deliberately uses the wave color instead of pure white:
+    // when many frames are accumulated into the trail buffer, white highlights
+    // can visually decay into a broad gray wash, especially in WebGL builds.
+    ofSetColor(waveColor(wave, time, 0.5f, 0.24f * alphaScale));
     ofSetLineWidth(1.2f);
     ofPolyline spine;
     for (float xScreen = 0.0f; xScreen <= width; xScreen += step * 1.5f) {
