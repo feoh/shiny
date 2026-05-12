@@ -2,6 +2,8 @@
 
 An openFrameworks C++ sketch that fills the window with bright, layered sine-wave ribbons that drift, cross, glow, and leave optional motion trails.
 
+Live web version: https://feoh.github.io/shiny/
+
 ## Build
 
 Install openFrameworks, then either place this project in `openFrameworks/apps/myApps/sinuous_waves` and run:
